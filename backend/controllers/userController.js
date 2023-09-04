@@ -49,8 +49,92 @@ const getAllUsers = asyncHandler(async (req, res) => {
 });
 
 
+// Update an existing user by ID
+const updateUser = asyncHandler(async (req, res) => {
+    const userId = req.params.id; // pass the user ID in the URL parameter
+    const { firstName, lastName, email, city, postalCode } = req.body;
+
+    try {
+        const user = await User.findById(userId);
+
+        if (!user) {
+            res.status(404).json({ message: 'User not found.' });
+            return;
+        }
+
+        // Check if the email is already used by another user (excluding the current user)
+        const existingUserWithEmail = await User.findOne({ email, _id: { $ne: userId } });
+
+        if (existingUserWithEmail) {
+            res.status(400).json({ message: 'A user with this email already exists.' });
+            return;
+        }
+
+        // Update user properties
+        user.firstName = firstName;
+        user.lastName = lastName;
+        user.email = email;
+        user.city = city;
+        user.postalCode = postalCode;
+
+        // Save the updated user to the database
+        await user.save();
+
+        res.status(200).json({ message: 'User updated successfully.', user });
+    } catch (error) {
+        res.status(500).json({ message: 'Internal Server Error', error: error.message });
+    }
+});
+
+
+// Delete a user by ID
+const deleteUser = asyncHandler(async (req, res) => {
+    const userId = req.params.id; 
+
+    try {
+        const user = await User.findById(userId);
+
+        if (!user) {
+            res.status(404).json({ message: 'User not found.' });
+            return;
+        }
+
+        // Delete the user from the database
+        await user.deleteOne();
+
+        res.status(200).json({ message: 'User deleted successfully.' });
+    } catch (error) {
+        res.status(500).json({ message: 'Internal Server Error', error: error.message });
+    }
+});
+
+
+// Get a user by ID
+const getUserById = asyncHandler(async (req, res) => {
+    const userId = req.params.id; 
+
+    try {
+        const user = await User.findById(userId);
+
+        if (!user) {
+            res.status(404).json({ message: 'User not found.' });
+            return;
+        }
+
+        res.status(200).json(user);
+    } catch (error) {
+        res.status(500).json({ message: 'Internal Server Error', error: error.message });
+    }
+});
+
+
+
+
 
 module.exports = {
     createNewUser,
     getAllUsers,
+    updateUser,
+    deleteUser,
+    getUserById,
 };

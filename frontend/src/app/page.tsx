@@ -1,5 +1,5 @@
-import UserData from "@/components/userdata"
-import AddUser from "@/addUser/addUser"
+import UserData from "@/components/user/userData/userdata"
+import AddUser from "@/components/user/addUser/addUser"
 
 
 export default function Home() {

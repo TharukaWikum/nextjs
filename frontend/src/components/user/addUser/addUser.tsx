@@ -1,3 +1,4 @@
+
 "use client";
 import React, { useState } from 'react';
 import axios from 'axios';
@@ -18,6 +19,13 @@ const AddUser = () => {
     city: '',
     postalCode: '',
   });
+  const [errorMessages, setErrorMessages] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    city: '',
+    postalCode: '',
+  });
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -25,9 +33,51 @@ const AddUser = () => {
 
   const handleClose = () => {
     setOpen(false);
+    setErrorMessages({
+      firstName: '',
+      lastName: '',
+      email: '',
+      city: '',
+      postalCode: '',
+    });
   };
 
   const handleSave = () => {
+    // Validate form data
+    const validationErrors = {};
+    let isValid = true;
+
+    // Check if fields are empty
+    for (const key in formData) {
+      if (!formData[key]) {
+        validationErrors[key] = 'This field is required';
+        isValid = false;
+      }
+    }
+
+    // Validate first name and last name (letters only)
+    const nameRegex = /^[A-Za-z]+$/;
+    if (!formData.firstName.match(nameRegex)) {
+      validationErrors.firstName = 'First name must contain letters only';
+      isValid = false;
+    }
+    if (!formData.lastName.match(nameRegex)) {
+      validationErrors.lastName = 'Last name must contain letters only';
+      isValid = false;
+    }
+
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!formData.email.match(emailRegex)) {
+      validationErrors.email = 'Invalid email format';
+      isValid = false;
+    }
+
+    if (!isValid) {
+      setErrorMessages(validationErrors);
+      return;
+    }
+
     // Send a POST request to your backend API to create a new user
     axios
       .post('http://localhost:3500/users', formData)
@@ -46,15 +96,23 @@ const AddUser = () => {
         window.location.reload();
       })
       .catch((error) => {
-        console.error('Error creating user:', error);
+        if (error.response && error.response.data && error.response.data.message) {
+          setErrorMessages({ ...errorMessages, email: error.response.data.message });
+        } else {
+          console.error('Error creating user:', error);
+        }
       });
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
       [name]: value,
+    });
+    setErrorMessages({
+      ...errorMessages,
+      [name]: '', // Clear validation error message when user types
     });
   };
 
@@ -77,6 +135,8 @@ const AddUser = () => {
             fullWidth
             value={formData.firstName}
             onChange={handleChange}
+            error={Boolean(errorMessages.firstName)}
+            helperText={errorMessages.firstName}
           />
           <TextField
             margin="dense"
@@ -85,6 +145,8 @@ const AddUser = () => {
             fullWidth
             value={formData.lastName}
             onChange={handleChange}
+            error={Boolean(errorMessages.lastName)}
+            helperText={errorMessages.lastName}
           />
           <TextField
             margin="dense"
@@ -93,23 +155,28 @@ const AddUser = () => {
             fullWidth
             value={formData.email}
             onChange={handleChange}
+            error={Boolean(errorMessages.email)}
+            helperText={errorMessages.email}
           />
-          <TextField
-            margin="dense"
-            name="city"
-            label="City"
-            fullWidth
-            value={formData.city}
-            onChange={handleChange}
-          />
-          <TextField
-            margin="dense"
-            name="postalCode"
-            label="Postal Code"
-            fullWidth
-            value={formData.postalCode}
-            onChange={handleChange}
-          />
+          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <TextField
+              margin="normal"
+              name="city"
+              label="City"
+              fullWidth
+              value={formData.city}
+              onChange={handleChange}
+              style={{ paddingRight: '5px' }}
+            />
+            <TextField
+              margin="normal"
+              name="postalCode"
+              label="Postal Code"
+              fullWidth
+              value={formData.postalCode}
+              onChange={handleChange}
+            />
+          </div>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="primary">
