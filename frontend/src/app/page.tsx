@@ -1,5 +1,6 @@
 import UserData from "@/components/user/userData/userdata"
 import AddUser from "@/components/user/addUser/addUser"
+import Login from "@/components/login/login"
 
 
 export default function Home() {
@@ -7,8 +8,10 @@ export default function Home() {
     <main style={{ padding: '20px' }}>
 
    
-    <AddUser />
-    <div><UserData /></div>
+    {/* <AddUser />
+    <div><UserData /></div> */}
+
+    <Login />
     
     
     </main>
