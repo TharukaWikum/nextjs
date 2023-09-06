@@ -1,31 +1,45 @@
+.light-theme {
+  --background-color: #f5f5f5; /* Light theme background color */
+  --text-color: #333333;       /* Light theme text color */
+  --box-color: rgb(173, 170, 170);
+}
+
+/* Define variables for dark theme */
+.dark-theme {
+  
+  --background-color: #333333b0;  /* Dark theme background color */
+  --text-color: #ffffff;        /* Dark theme text color */
+  --box-color: rgb(180, 48, 48);
+}
+
 .login-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background-color: #f5f5f5;
-  }
-  
-  .login-form {
-    background-color: #ffffff;
-    padding: 20px;
-    border-radius: 4px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-    width: 300px;
-    text-align: center;
-  }
-  
-  .login-form h1 {
-    margin-bottom: 20px;
-    color: #333333;
-    font-size: 24px;
-  }
-  
-  .login-form .ant-form-item {
-    margin-bottom: 15px;
-  }
-  
-  .login-form .ant-btn {
-    width: 100%;
-  }
-  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: var(--box-color);
+  color: var(--text-color);
+}
+
+.login-form {
+  padding: 20px;
+  border-radius: 4px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+  width: 300px;
+  text-align: center;
+  background-color: var(--box-color);
+  color: var(--text-color);
+}
+
+
+.login-form h1 {
+  margin-bottom: 20px;
+  color: var(--text-color-light); /* Use CSS variable for text color */
+}
+
+
+
+.submit{
+  background-color: rgb(128, 125, 125);
+  color:var(--text-color-light)
+}

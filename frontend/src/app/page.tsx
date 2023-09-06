@@ -5,6 +5,7 @@ import Login from "@/components/login/login"
 
 export default function Home() {
   return (<>
+  
     <main style={{ padding: '20px' }}>
 
    
@@ -15,6 +16,7 @@ export default function Home() {
     
     
     </main>
+    
     
     
 
