@@ -9,7 +9,7 @@
   
   --background-color: #333333b0;  /* Dark theme background color */
   --text-color: #ffffff;        /* Dark theme text color */
-  --box-color: rgb(180, 48, 48);
+  --box-color: rgb(141, 141, 141);
 }
 
 .login-container {
@@ -36,6 +36,21 @@
   margin-bottom: 20px;
   color: var(--text-color-light); /* Use CSS variable for text color */
 }
+
+/* For light theme */
+.login-form .form-item.light-theme {
+  background-color: var(--box-color);
+  color: var(--text-color);
+  border: 1px solid var(--box-color);
+}
+
+/* For dark theme */
+.login-form .form-item.dark-theme {
+  background-color: var(--box-color);
+  color: var(--text-color);
+  border: 1px solid var(--box-color);
+}
+
 
 
 
